@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color:rgb(96, 213, 221);
+            padding: 2em;
+            font-family:'Arial';
+        }
+        h1{
+            color: rgb(11, 27, 27);
+            text-align:center;
+            font-size: 7em;
+        }
+        .row{
+            display:flex;
+        }
+        .column{
+            flex:50%;
+        }
+        img{
+            margin: 0.3em;
+            border-radius: 35px;
+            border: solid 2px black;
+        }
+        .user-profile{
+            margin: auto;
+            padding: 0.5em;
+            width:21em;
+            background-color: white;
+            border-radius: 0.4em;
+            color: rgb(61, 65, 129);
+        }
+        #full-name{
+            font-size: 2em;
+        }
+        #user-details{
+            font-size: 1em;
+            margin-top: .9em;
+        }
+        #myButton{
+            margin-top: 3em;
+            width:auto;
+            font-size: 3em;
+            margin-left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <div><h1>Random User</h1></div>
+    <div class="user-profile">
+        <div class="row">
+            <div class="column">
+                <img src="" alt="" id="avatar">
+            </div>
+            <div class="column">
+                <div id="full-name"></div>
+                <div id="username"></div>
+                <div id="user-details">
+                    <div id="email"></div>
+                    <div id="country"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div><button id="myButton">Generate new user</button></div>
+    <script>
+        const avatar  = document.querySelector('#avatar');
+        const fullname  = document.querySelector('#full-name');
+        const email  = document.querySelector('#email');
+        const country  = document.querySelector('#country');
+        const myButton = document.querySelector('#myButton');
+
+        function newUser(){
+            fetch('https://randomuser.me/api/')
+            .then(response => response.json())
+            .then(data => processData(data))
+        }
+
+        function processData(data){
+            console.log(data);
+            var results1 = data.results[0];
+            var user = {
+                av: results1.picture.medium,
+                fname: results1.name.first +" " +results1.name.last,
+                em: results1.email,
+                co: results1.location.country
+            }
+            avatar.src = user.av;
+            fullname.innerHTML = user.fname;
+            email.innerHTML = user.em;
+            country.innerHTML = user.co;
+        }
+
+        window.onload = newUser;
+        myButton.onclick = newUser;
+    </script>
+</body>
+</html>
